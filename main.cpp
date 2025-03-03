@@ -1,8 +1,52 @@
-#include"head.h"
+#include"scene.h"
+
+#include"menu_scene.h"
+#include"game_scene.h"
+#include"selector_scene.h"
+#include"scene_manager.h"
+
+#include"mine.h"
+#include"mine_board.h"
+
+#include<graphics.h>
+
+ExMessage msg;
+
+IMAGE img_menu_background;
+IMAGE img_menu_setting;
+IMAGE img_menu_start;
+
+
+IMAGE MineExplode;
+IMAGE MineCover;
+IMAGE Num1;
+IMAGE Num2;
+IMAGE Num3;
+IMAGE Num4;
+IMAGE Num5;
+IMAGE Num6;
+IMAGE Num7;
+IMAGE Num8;
+IMAGE Base;
+IMAGE MineMarked;
+IMAGE MineFined;
+IMAGE MineBace;//test
+
+Scene* menu_scene = nullptr;
+Scene* game_scene = nullptr;
+Scene* selector_scene = nullptr;
+
+SceneManager scene_manager;
+MineBoard board;
+Mine mine;
 
 void LoadResource()
 {
-	loadimage(&MineExplode, _T("res/Mine.png"));
+	loadimage(&img_menu_background, _T("res/Menu.png"));
+	loadimage(&img_menu_start, _T("res/Start.png"));
+	loadimage(&img_menu_setting, _T("res/Setting.png"));
+
+	loadimage(&MineExplode, _T("res/MineExplode.png"));
 	loadimage(&MineCover, _T("res/MineCover.png"));
 	loadimage(&Num1, _T("res/Num1.png"));
 	loadimage(&Num2, _T("res/Num2.png"));
@@ -18,33 +62,46 @@ void LoadResource()
 	loadimage(&MineBace, _T("res/MineBace.png"));//test
 }
 
-
 int main()
 {
+	constexpr int FPS = 30;
 
-	srand((unsigned int)time(NULL));//初始化随机数
+	LoadResource();
+	srand((unsigned int)time(NULL));
+
+	initgraph(1,1);
+	BeginBatchDraw();
+
+	menu_scene = new MenuScene();
+	game_scene = new GameScene();
+	selector_scene = new SelectorScene();
+
+	scene_manager.set_current_scene(menu_scene);
 
 	while (true)
 	{
-		DWORD start_time = GetTickCount();
-		FlushBatchDraw();
+		DWORD frame_start_time = GetTickCount();
+
 		while (peekmessage(&msg))
 		{
-
-
+			scene_manager.on_input(msg);
 		}
 
-		DWORD end_time = GetTickCount();
-		DWORD delta_time = end_time - start_time;
-		if (delta_time < 1000 / ((unsigned int)fps))//程序循环的优化
-		{
-			Sleep(1000 / fps - delta_time);
-		}
+		scene_manager.on_update();
+
+		cleardevice();
+
+		scene_manager.on_draw();
+
+		FlushBatchDraw();
+
+		DWORD frame_end_time = GetTickCount();
+		DWORD frame_delta_time = frame_end_time - frame_start_time;
+		if (frame_delta_time < 1000 / FPS)
+			Sleep(1000 / FPS - frame_delta_time);
 	}
 
 	EndBatchDraw();
-
-	closegraph();
 
 	return 0;
 }
