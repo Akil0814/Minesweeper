@@ -1,19 +1,20 @@
 #pragma once
+#include<graphics.h>
+
 class Scene
 {
 public:
-	Scene()
-	{
+	Scene() = default;
+	~Scene() = default;
 
-	}
-	~Scene()
-	{
+	
+	virtual void on_enter() {}
+	virtual void on_update() {}
+	virtual void on_draw() {}
+	virtual void on_input(const ExMessage& msg) {}
+	virtual void on_exit() {}
 
-	}
-	void Init();
-	void Draw();
-	void Update();
-	void End();
-	void SetScene(int scene);
-	int GetScene();
+protected:
+	int WINDOW_WIDTH=350;
+	int WINDOW_HEIGHT=450;
 };
