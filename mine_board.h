@@ -35,6 +35,26 @@ public:
 	MineBoard() = default;
 	~MineBoard()= default;
 
+	//void set_board()
+	//{
+	//	width = mine.get_mine_width();
+	//	for (int i = 0; i < col_mine; i++)
+	//	{
+	//		vector<int>tmp(row_mine, IS_EMPTY);
+	//		board_mine.push_back(tmp);
+	//	}
+	//	for (int i = 0; i < col_mine; i++)
+	//	{
+	//		vector<int>tmp(row_mine, IS_EMPTY);
+	//		board_show.push_back(tmp);
+	//	}
+	//	for (int i = 0; i < col_mine; i++)
+	//	{
+	//		vector<int>tmp(row_mine, IS_EMPTY);
+	//		board_num.push_back(tmp);
+	//	}
+	//}
+
 	void set_board()
 	{
 		width = mine.get_mine_width();
@@ -49,7 +69,7 @@ public:
 	{
 		int count = num_of_mine;
 
-		board_mine[index_x][index_y] = 1;
+			board_mine[index_x][index_y] = 1;
 		if(15 <(row_show * col_show)- num_of_mine)
 		{
 			board_mine[index_x + 1][index_y] = 1;
@@ -74,7 +94,7 @@ public:
 			}
 		}
 
-		board_mine[index_x][index_y] = 0;
+			board_mine[index_x][index_y] = 0;
 		if (15 < (row_show * col_show) - num_of_mine)
 		{
 			board_mine[index_x + 1][index_y] = 0;
@@ -92,6 +112,7 @@ public:
 			for (int j = 1; j <= col_show; j++)
 				board_num[i][j] = (get_mine_count(i, j));
 		}
+
 	}
 
 	void draw_board()
@@ -211,7 +232,8 @@ public:
 	}
 
 	void check_mine(const int x,const int y)
-	{	
+	{
+		
 		if (board_mine[x][y] == IS_EMPTY && board_show[x][y] == IS_EMPTY)
 		{
 			board_show[x][y] = IS_CHEAKED;
@@ -233,7 +255,7 @@ public:
 		if (board_show[x][y] == IS_EMPTY)
 		{
 			board_show[x][y] = IS_FLAG;
-		}
+			}
 		else if (board_show[x][y] == IS_FLAG)
 		{
 			board_show[x][y] = IS_EMPTY;

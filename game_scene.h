@@ -23,6 +23,7 @@ public:
 
 		initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
 		board.set_board();
+
 	}
 
 	void on_update()
@@ -33,8 +34,8 @@ public:
 			{
 				L_button_down = false;
 				scene_manager.switch_to(SceneManager::SceneType::Menu);
-			}
 		}
+	}
 		else 
 		{
 			if (L_button_down)
@@ -58,29 +59,29 @@ public:
 			board.show_all_mine();
 		}
 		else
-			board.draw_board();
+		board.draw_board();
 	}
 
 	void on_input(const ExMessage& msg)
 	{
 			if(msg.message == WM_LBUTTONDOWN)
-			{
+		{
 				L_button_down = true;
 				x_index = (msg.x / mine.get_mine_width()+1);
 				y_index = (msg.y / mine.get_mine_width()+1);
 				if (waiting_for_first_click)
-				{
+			{
 					board.set_mine(y_index, x_index);
-					waiting_for_first_click = false;
-				}
-
+				waiting_for_first_click = false;
 			}
+
+		}
 			else if (msg.message == WM_RBUTTONDOWN)
 			{
 				R_button_down = true;
 				x_index = (msg.x / mine.get_mine_width() + 1);
 				y_index = (msg.y / mine.get_mine_width() + 1);
-			}
+		}
 	}
 
 	void on_exit()

@@ -43,4 +43,5 @@ public:
 private:
 	int width = get_mine_width();
 	int num_of_mine=10;
+	int num_of_flag = num_of_mine;
 };
