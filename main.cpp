@@ -33,9 +33,13 @@ IMAGE MineMarked;
 IMAGE MineFined;
 IMAGE MineBase;
 IMAGE Bar;
+
 IMAGE Restart_Idle;
 IMAGE Restart_Hovered;
 IMAGE Restart_Pushed;
+IMAGE Exit_Idle;
+IMAGE Exit_Hovered;
+IMAGE Exit_Pushed;
 
 Scene* menu_scene = nullptr;
 Scene* game_scene = nullptr;
@@ -69,10 +73,14 @@ void LoadResource()
 	loadimage(&MineMarked, _T("res/MineMarked.png"));
 	loadimage(&MineFined, _T("res/MineFined.png"));
 	loadimage(&MineBase, _T("res/MineBase.png"));
+
 	loadimage(&Bar, _T("res/Bar.png"));
 	loadimage(&Restart_Idle, _T("res/Restart_Idle.png"));
 	loadimage(&Restart_Hovered, _T("res/Restart_Hovered.png"));
 	loadimage(&Restart_Pushed, _T("res/Restart_Pushed.png"));
+	loadimage(&Exit_Idle, _T("res/Exit_Idle.png"));
+	loadimage(&Exit_Hovered, _T("res/Exit_Hovered.png"));
+	loadimage(&Exit_Pushed, _T("res/Exit_Pushed.png"));
 }
 
 int main()

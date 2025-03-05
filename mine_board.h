@@ -27,7 +27,6 @@ extern IMAGE MineExplode;
 extern IMAGE MineFined;
 
 extern IMAGE MineBase;
-extern IMAGE Bar;
 
 class MineBoard
 {
@@ -97,9 +96,9 @@ public:
 
 	void draw_board()
 	{
-		for (int i = 1; i <=graph_y; i++)
+		for (int i = 1; i <= row_show; i++)
 		{
-			for (int j = 1; j <= graph_x; j++)
+			for (int j = 1; j <= col_show; j++)
 			{
 				if (board_show[i][j] == IS_CHEAKED)
 				{
@@ -147,14 +146,14 @@ public:
 				}
 			}
 		}
-		putimage(0, row_show * width, &Bar);
+
 	}
 
 	void show_all_mine()
 	{
-		for (int i = 1; i <= graph_y; i++)
+		for (int i = 1; i <= row_show; i++)
 		{
-			for (int j = 1; j <= graph_x; j++)
+			for (int j = 1; j <= col_show; j++)
 			{
 				if (board_show[i][j] == IS_CHEAKED)
 				{
@@ -210,8 +209,6 @@ public:
 				}
 			}
 		}
-		putimage(0, row_show * width, &Bar);
-
 	}
 
 	void check_mine(const int x,const int y)
@@ -281,6 +278,16 @@ public:
 		is_game_end = false;
 	}
 
+	int get_width()const
+	{
+		return col_show * width;
+	}
+
+	int get_height()const
+	{
+		return row_show * width;
+	}
+
 private:
 
 	void check_around(int x, int y)
@@ -329,9 +336,6 @@ private:
 	int col_show = 10;
 	int row_mine = row_show+2;
 	int col_mine = col_show+2;
-
-	int graph_x = col_show;
-	int graph_y = row_show;
 
 	int num_of_mine= mine.get_mine_count();
 	int num_of_cover = (row_show * col_show) - num_of_mine;
