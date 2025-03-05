@@ -22,11 +22,11 @@ public:
 	}
 	void on_update()
 	{
-		putimage(0, 0, &img_setting_background);
+		
 	}
 	void on_draw()
 	{
-
+		putimage(0, 0, &img_setting_background);
 	}
 	void on_input(const ExMessage& msg)
 	{
