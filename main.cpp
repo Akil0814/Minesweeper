@@ -1,4 +1,5 @@
 #include"scene_manager.h"
+
 #include"scene.h"
 #include"menu_scene.h"
 #include"game_scene.h"
@@ -7,13 +8,15 @@
 #include"mine.h"
 #include"mine_board.h"
 
+#include"button.h"
+
 #include<graphics.h>
 
 ExMessage msg;
 
 IMAGE img_menu_background;
 IMAGE img_menu_setting;
-IMAGE img_menu_start;
+IMAGE Menu_Start_Idle;
 
 IMAGE img_setting_background;
 
@@ -49,7 +52,7 @@ void LoadResource()
 
 
 	loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
-	loadimage(&img_menu_start, _T("res/Menu_Start.png"));
+	loadimage(&Menu_Start_Idle, _T("res/Menu_Start_Idle.png"));
 	loadimage(&img_menu_setting, _T("res/Menu_Setting.png"));
 
 	loadimage(&MineExplode, _T("res/MineExplode.png"));

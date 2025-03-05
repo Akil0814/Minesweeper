@@ -2,6 +2,8 @@
 #include"mine.h"
 #include"mine_board.h"
 #include "scene_manager.h"
+#include"button.h"
+
 #include<iostream>
 
 extern ExMessage msg;
@@ -64,23 +66,23 @@ public:
 
 	void on_input(const ExMessage& msg)
 	{
-			if(msg.message == WM_LBUTTONDOWN)
+		if(msg.message == WM_LBUTTONDOWN)
 		{
-				L_button_down = true;
-				x_index = (msg.x / mine.get_mine_width()+1);
-				y_index = (msg.y / mine.get_mine_width()+1);
-				if (waiting_for_first_click)
+			L_button_down = true;
+			x_index = (msg.x / mine.get_mine_width()+1);
+			y_index = (msg.y / mine.get_mine_width()+1);
+			if (waiting_for_first_click)
 			{
-					board.set_mine(y_index, x_index);
+				board.set_mine(y_index, x_index);
 				waiting_for_first_click = false;
 			}
 
 		}
-			else if (msg.message == WM_RBUTTONDOWN)
-			{
-				R_button_down = true;
-				x_index = (msg.x / mine.get_mine_width() + 1);
-				y_index = (msg.y / mine.get_mine_width() + 1);
+		else if (msg.message == WM_RBUTTONDOWN)
+		{
+			R_button_down = true;
+			x_index = (msg.x / mine.get_mine_width() + 1);
+			y_index = (msg.y / mine.get_mine_width() + 1);
 		}
 	}
 
