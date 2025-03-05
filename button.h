@@ -7,21 +7,28 @@ public:
 	Button(){}
 	~Button() {}
 
-	void set_image()
+	void set_image(IMAGE* idle, IMAGE* hovered, IMAGE* pushed)
 	{
-		img_idle = nullptr;
-		img_hovered = nullptr;
-		img_pushed = nullptr;
+		img_idle = idle;
+		img_hovered = hovered;
+		img_pushed = pushed;
 	}
 
-	void set_top()
+	void set_top(int x)
 	{
-
+		region.top = x;
+		region.bottom = region.top + img_idle->getheight();
 	}
 
-	void set_left()
+	void set_left(int y)
 	{
+		region.left= y;
+		region.right = region.left + img_idle->getwidth();
+	}
 
+	void reset_button()
+	{
+		is_clicked = false;
 	}
 
 	void draw()
@@ -40,19 +47,78 @@ public:
 		}
 	}
 
-	bool check_cursor_hit(int x, int y)
+	void process_event(const ExMessage& msg)
+	{
+		switch (msg.message)
+		{
+		case WM_MOUSEMOVE:
+			if (status == Status::Idle && check_cursor_hit(msg.x, msg.y))
+				status = Status::Hovered;
+			else if (status == Status::Hovered && !check_cursor_hit(msg.x, msg.y))
+				status = Status::Idle;
+			break;
+		case WM_LBUTTONDOWN:
+			if (check_cursor_hit(msg.x, msg.y))
+			{
+				status = Status::Pushed;
+			}
+			break;
+		case WM_LBUTTONUP:
+			if (status == Status::Pushed)
+			{
+				is_clicked = true;
+				status = Status::Idle;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	bool check_cursor_hit(int x, int y)const
 	{
 		return x >= region.left && x <= region.right && y >= region.top && y <= region.bottom;
 	}
 
+	bool cheek_is_clicked()const
+	{
+		return is_clicked;
+	}
+
+	int get_button_width()const
+	{
+		return img_idle->getwidth();
+	}
+
+	int get_button_height()const
+	{
+		return img_idle->getheight();
+	}
+
+	int cheek_top() const
+	{
+		return region.top;
+	}
+
+	int cheek_left() const
+	{
+		return region.left;
+	}
+
+
 private:
+
 	enum class Status
 	{
 		Idle = 0,
 		Hovered,
 		Pushed
 	};
+
 private:
+
+	bool is_clicked = false;
+
 	RECT region={0,0,0,0};
 	IMAGE* img_idle=nullptr;
 	IMAGE* img_hovered = nullptr;

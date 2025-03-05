@@ -1,24 +1,22 @@
 #include"scene_manager.h"
-
 #include"scene.h"
 #include"menu_scene.h"
 #include"game_scene.h"
 #include"selector_scene.h"
-
 #include"mine.h"
 #include"mine_board.h"
-
 #include"button.h"
-
 #include<graphics.h>
 
 ExMessage msg;
 
-IMAGE img_menu_background;
-IMAGE img_menu_setting;
+IMAGE Menu_background;
 IMAGE Menu_Start_Idle;
-
-IMAGE img_setting_background;
+IMAGE Menu_Start_Hovered;
+IMAGE Menu_Start_Pushed;
+IMAGE Menu_Setting_Idle;
+IMAGE Menu_Setting_Hovered;
+IMAGE Menu_Setting_Pushed;
 
 IMAGE MineExplode;
 IMAGE MineCover;
@@ -33,7 +31,11 @@ IMAGE Num8;
 IMAGE Base;
 IMAGE MineMarked;
 IMAGE MineFined;
-IMAGE MineBace;
+IMAGE MineBase;
+IMAGE Bar;
+IMAGE Restart_Idle;
+IMAGE Restart_Hovered;
+IMAGE Restart_Pushed;
 
 Scene* menu_scene = nullptr;
 Scene* game_scene = nullptr;
@@ -45,15 +47,13 @@ Mine mine;
 
 void LoadResource()
 {
-	loadimage(&img_setting_background, _T("res/Setting_back_ground.png"));
-	//loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
-	//loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
-	//loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
-
-
-	loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
+	loadimage(&Menu_background, _T("res/Menu_back_ground.png"));
 	loadimage(&Menu_Start_Idle, _T("res/Menu_Start_Idle.png"));
-	loadimage(&img_menu_setting, _T("res/Menu_Setting.png"));
+	loadimage(&Menu_Start_Hovered, _T("res/Menu_Start_Hovered.png"));
+	loadimage(&Menu_Start_Pushed, _T("res/Menu_Start_Pushed.png"));
+	loadimage(&Menu_Setting_Idle, _T("res/Menu_Setting_Idle.png"));
+	loadimage(&Menu_Setting_Hovered, _T("res/Menu_Setting_Hovered.png"));
+	loadimage(&Menu_Setting_Pushed, _T("res/Menu_Setting_Pushed.png"));
 
 	loadimage(&MineExplode, _T("res/MineExplode.png"));
 	loadimage(&MineCover, _T("res/MineCover.png"));
@@ -68,7 +68,11 @@ void LoadResource()
 	loadimage(&Base, _T("res/Base.png"));
 	loadimage(&MineMarked, _T("res/MineMarked.png"));
 	loadimage(&MineFined, _T("res/MineFined.png"));
-	loadimage(&MineBace, _T("res/MineBace.png"));
+	loadimage(&MineBase, _T("res/MineBase.png"));
+	loadimage(&Bar, _T("res/Bar.png"));
+	loadimage(&Restart_Idle, _T("res/Restart_Idle.png"));
+	loadimage(&Restart_Hovered, _T("res/Restart_Hovered.png"));
+	loadimage(&Restart_Pushed, _T("res/Restart_Pushed.png"));
 }
 
 int main()

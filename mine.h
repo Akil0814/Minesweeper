@@ -17,12 +17,10 @@ public:
 		return num_of_mine;
 	}
 
-
 	int get_mine_width()const
 	{
 		return Base.getwidth();
 	}
-
 
 private:
 	int width = get_mine_width();

@@ -5,8 +5,6 @@
 
 #include<iostream>
 
-extern IMAGE img_setting_background;
-
 
 class SelectorScene :public Scene
 {
@@ -28,9 +26,9 @@ public:
 
 	void on_enter()
 	{
-		WINDOW_WIDTH = img_setting_background.getwidth();
-		WINDOW_HEIGHT = img_setting_background.getheight();
-		initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
+		//WINDOW_WIDTH = img_setting_background.getwidth();
+		//WINDOW_HEIGHT = img_setting_background.getheight();
+		//initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	void on_update()
 	{
@@ -43,7 +41,6 @@ public:
 
 	void on_draw()
 	{
-		putimage(0, 0, &img_setting_background);
 	}
 
 	void on_input(const ExMessage& msg)

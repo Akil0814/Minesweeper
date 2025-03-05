@@ -6,9 +6,13 @@
 #include<iostream>
 using namespace std;
 
-extern IMAGE img_menu_background;
-extern IMAGE img_menu_setting;
+extern IMAGE Menu_background;
 extern IMAGE Menu_Start_Idle;
+extern IMAGE Menu_Start_Hovered;
+extern IMAGE Menu_Start_Pushed;
+extern IMAGE Menu_Setting_Idle;
+extern IMAGE Menu_Setting_Hovered;
+extern IMAGE Menu_Setting_Pushed;
 
 extern SceneManager scene_manager;
 
@@ -21,37 +25,50 @@ public:
 
 	void on_enter()
 	{
-		WINDOW_WIDTH = img_menu_background.getwidth();
-		WINDOW_HEIGHT = img_menu_background.getheight();
+		WINDOW_WIDTH = Menu_background.getwidth();
+		WINDOW_HEIGHT = Menu_background.getheight();
 		initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+		start.set_image(&Menu_Start_Idle, &Menu_Start_Hovered, &Menu_Start_Pushed);
+		start.set_top((WINDOW_HEIGHT - start.get_button_height()) / 2);
+		start.set_left((WINDOW_WIDTH - start.get_button_width()) / 2);
+
+		setting.set_image(&Menu_Setting_Idle, &Menu_Setting_Hovered, &Menu_Setting_Pushed);
+		setting.set_top(start.cheek_top()+ start.get_button_height()+10);
+		setting.set_left(start.cheek_left());
 
 	}
 
-	void on_update(){}
+	void on_update()
+	{
+		if(start.cheek_is_clicked())
+			scene_manager.switch_to(SceneManager::SceneType::Game);
+		if (setting.cheek_is_clicked())
+			scene_manager.switch_to(SceneManager::SceneType::Selector);
+	}
 
 	void on_draw()
 	{
-		putimage(0, 0, &img_menu_background);
+		putimage(0, 0, &Menu_background);
+		start.draw();
+		setting.draw();
 	}
 
 	void on_input(const ExMessage& msg)
 	{
-		if (msg.message == WM_LBUTTONDOWN)
-		{
-			int x = msg.x;
-			int y = msg.y;
-			
-			if(true)
-			scene_manager.switch_to(SceneManager::SceneType::Game);
-
-			//if ()
-			//scene_manager.switch_to(SceneManager::SceneType::Selector);
-		}
+		start.process_event(msg);
+		setting.process_event(msg);
 	}
 
-	void on_exit(){}
+	void on_exit()
+	{
+		start.reset_button();
+		setting.reset_button();
+	}
 
 private:
 	Button setting;
 	Button start;
+
+	bool is_click=false;
 };

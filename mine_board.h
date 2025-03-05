@@ -1,5 +1,6 @@
 #pragma once
 #include"mine.h"
+#include"button.h"
 #include<vector>
 using namespace std;
 
@@ -25,16 +26,14 @@ extern IMAGE MineCover;
 extern IMAGE MineExplode;
 extern IMAGE MineFined;
 
-extern IMAGE MineBace;//test
-
-
+extern IMAGE MineBase;
+extern IMAGE Bar;
 
 class MineBoard
 {
 public:
 	MineBoard() = default;
 	~MineBoard()= default;
-
 
 	void set_board()
 	{
@@ -148,6 +147,7 @@ public:
 				}
 			}
 		}
+		putimage(0, row_show * width, &Bar);
 	}
 
 	void show_all_mine()
@@ -210,11 +210,13 @@ public:
 				}
 			}
 		}
+		putimage(0, row_show * width, &Bar);
+
 	}
 
 	void check_mine(const int x,const int y)
 	{
-		
+
 		if (board_mine[x][y] == IS_EMPTY && board_show[x][y] == IS_EMPTY)
 		{
 			board_show[x][y] = IS_CHEAKED;
@@ -302,7 +304,6 @@ private:
 			check_mine(x + 1, y + 1);
 	}
 
-
 	int get_mine_count(const int x, const int y)const
 	{
 		if (x<1 || x>row_show || y<1 || y>col_show)
@@ -319,6 +320,7 @@ private:
 	}
 
 private:
+
 	vector<vector<int>>board_mine;
 	vector<vector<int>>board_show;
 	vector<vector<int>>board_num;
@@ -336,4 +338,5 @@ private:
 	int width = mine.get_mine_width();
 
 	bool is_game_end=false;
+
 };

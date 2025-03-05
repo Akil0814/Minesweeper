@@ -7,7 +7,13 @@
 #include<iostream>
 
 extern ExMessage msg;
+extern IMAGE Bar;
+extern IMAGE Restart_Idle;
+extern IMAGE Restart_Hovered;
+extern IMAGE Restart_Pushed;
+
 extern MineBoard board;
+extern Button restart;
 extern Mine mine;
 
 extern SceneManager scene_manager;
@@ -20,12 +26,15 @@ public:
 
 	void on_enter()
 	{
-		WINDOW_WIDTH = (board.cheek_col())*(mine.get_mine_width());
-		WINDOW_HEIGHT = (board.cheek_row())*(mine.get_mine_width());
+		WINDOW_WIDTH = board.cheek_col()*mine.get_mine_width();
+		WINDOW_HEIGHT = board.cheek_row()*mine.get_mine_width()+Bar.getheight();
+
+		restart.set_image(&Restart_Idle, &Restart_Hovered, &Restart_Pushed);
+		restart.set_left(WINDOW_WIDTH - restart.get_button_width() - 10);
+		restart.set_top(WINDOW_HEIGHT - restart.get_button_height() - 10);
 
 		initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
 		board.set_board();
-
 	}
 
 	void on_update()
@@ -62,6 +71,7 @@ public:
 		}
 		else
 		board.draw_board();
+		restart.draw();
 	}
 
 	void on_input(const ExMessage& msg)
@@ -84,6 +94,7 @@ public:
 			x_index = (msg.x / mine.get_mine_width() + 1);
 			y_index = (msg.y / mine.get_mine_width() + 1);
 		}
+		restart.process_event(msg);
 	}
 
 	void on_exit()
@@ -94,6 +105,9 @@ public:
 	}
 
 private:
+	
+	Button restart;
+
 	int x_index = msg.x;
 	int y_index = msg.y;
 
