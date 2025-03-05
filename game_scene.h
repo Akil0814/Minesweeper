@@ -34,8 +34,8 @@ public:
 			{
 				L_button_down = false;
 				scene_manager.switch_to(SceneManager::SceneType::Menu);
+			}
 		}
-	}
 		else 
 		{
 			if (L_button_down)

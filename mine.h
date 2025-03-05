@@ -1,21 +1,5 @@
 #pragma once
-#include<iostream>
-
-extern IMAGE MineMarked;
-extern IMAGE Num1;
-extern IMAGE Num2;
-extern IMAGE Num3;
-extern IMAGE Num4;
-extern IMAGE Num5;
-extern IMAGE Num6;
-extern IMAGE Num7;
-extern IMAGE Num8;
 extern IMAGE Base;
-
-extern IMAGE MineExplode;
-extern IMAGE MineFined;
-
-extern IMAGE MineBace;//test
 
 class Mine
 {

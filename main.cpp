@@ -1,9 +1,8 @@
+#include"scene_manager.h"
 #include"scene.h"
-
 #include"menu_scene.h"
 #include"game_scene.h"
 #include"selector_scene.h"
-#include"scene_manager.h"
 
 #include"mine.h"
 #include"mine_board.h"
@@ -16,6 +15,7 @@ IMAGE img_menu_background;
 IMAGE img_menu_setting;
 IMAGE img_menu_start;
 
+IMAGE img_setting_background;
 
 IMAGE MineExplode;
 IMAGE MineCover;
@@ -30,7 +30,7 @@ IMAGE Num8;
 IMAGE Base;
 IMAGE MineMarked;
 IMAGE MineFined;
-IMAGE MineBace;//test
+IMAGE MineBace;
 
 Scene* menu_scene = nullptr;
 Scene* game_scene = nullptr;
@@ -42,9 +42,15 @@ Mine mine;
 
 void LoadResource()
 {
-	loadimage(&img_menu_background, _T("res/Menu.png"));
-	loadimage(&img_menu_start, _T("res/Start.png"));
-	loadimage(&img_menu_setting, _T("res/Setting.png"));
+	loadimage(&img_setting_background, _T("res/Setting_back_ground.png"));
+	//loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
+	//loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
+	//loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
+
+
+	loadimage(&img_menu_background, _T("res/Menu_back_ground.png"));
+	loadimage(&img_menu_start, _T("res/Menu_Start.png"));
+	loadimage(&img_menu_setting, _T("res/Menu_Setting.png"));
 
 	loadimage(&MineExplode, _T("res/MineExplode.png"));
 	loadimage(&MineCover, _T("res/MineCover.png"));
@@ -59,7 +65,7 @@ void LoadResource()
 	loadimage(&Base, _T("res/Base.png"));
 	loadimage(&MineMarked, _T("res/MineMarked.png"));
 	loadimage(&MineFined, _T("res/MineFined.png"));
-	loadimage(&MineBace, _T("res/MineBace.png"));//test
+	loadimage(&MineBace, _T("res/MineBace.png"));
 }
 
 int main()

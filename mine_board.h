@@ -35,25 +35,6 @@ public:
 	MineBoard() = default;
 	~MineBoard()= default;
 
-	//void set_board()
-	//{
-	//	width = mine.get_mine_width();
-	//	for (int i = 0; i < col_mine; i++)
-	//	{
-	//		vector<int>tmp(row_mine, IS_EMPTY);
-	//		board_mine.push_back(tmp);
-	//	}
-	//	for (int i = 0; i < col_mine; i++)
-	//	{
-	//		vector<int>tmp(row_mine, IS_EMPTY);
-	//		board_show.push_back(tmp);
-	//	}
-	//	for (int i = 0; i < col_mine; i++)
-	//	{
-	//		vector<int>tmp(row_mine, IS_EMPTY);
-	//		board_num.push_back(tmp);
-	//	}
-	//}
 
 	void set_board()
 	{
