@@ -45,9 +45,10 @@ public:
 		num_of_mine_left = mine.get_mine_count();
 		num_of_cover = (row_show * col_show) - num_of_mine;
 
-		board_mine.resize(row_mine, vector<int>(col_mine, IS_EMPTY));
-		board_show.resize(row_mine, vector<int>(col_mine, IS_EMPTY));
-		board_num.resize(row_mine, vector<int>(col_mine, IS_EMPTY));
+		board_mine.assign(row_mine, vector<int>(col_mine, IS_EMPTY));
+		board_show.assign(row_mine, vector<int>(col_mine, IS_EMPTY));
+		board_num.assign(row_mine, vector<int>(col_mine, IS_EMPTY));
+
 	}
 
 	void set_mine(const int index_x,const int index_y)
@@ -69,10 +70,8 @@ public:
 				board_mine[index_x + 1][index_y + 1] = KEEP_SPACE_EMPTY;
 			}
 
-
 		while (count>0)
 		{
-
 			int x = (rand() % row_show +1);
 			int y = (rand() % col_show +1);
 			if (board_mine[x][y] == 0)
@@ -81,7 +80,6 @@ public:
 				count--;
 			}
 		}
-
 
 			board_mine[index_x][index_y] = RESET;
 			if (15 < (row_show * col_show) - num_of_mine)
@@ -94,7 +92,7 @@ public:
 				board_mine[index_x + 1][index_y - 1] = RESET;
 				board_mine[index_x - 1][index_y + 1] = RESET;
 				board_mine[index_x + 1][index_y + 1] = RESET;
-		}
+			}
 
 		for (int i = 1; i <= row_show; i++)
 		{
@@ -108,13 +106,10 @@ public:
 	{
 		for (int i = 1; i <= row_show; i++)
 		{
-
 			for (int j = 1; j <= col_show; j++)
 			{
-
 				if (board_show[i][j] == IS_CHEAKED)
 				{
-
 					int num = board_num[i][j];
 					switch (num)
 					{
@@ -269,7 +264,7 @@ public:
 	void set_rows(int row)
 	{
 		row_show = row;
-		col_mine = col_show + 2;
+		row_mine = row_show + 2;
 	}
 
 	void set_cols(int col)

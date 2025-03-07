@@ -1,5 +1,6 @@
 #pragma once
 #include<graphics.h>
+#include<iostream>
 
 class Button
 {
@@ -28,13 +29,18 @@ public:
 
 	void set_hold(bool hold)
 	{
-		bool will_hold = hold;
+		will_hold = hold;
 	}
 
-	void reset_button()
+	void reset_click()
 	{
 		is_clicked = false;
+	}
+
+	void reset_status()
+	{
 		status = Status::Idle;
+		std::cout << "reset" <<std:: endl;
 	}
 
 	void draw()
@@ -55,6 +61,9 @@ public:
 
 	void process_event(const ExMessage& msg)
 	{
+		if (status == Status::Pushed && will_hold)
+			return;
+
 		switch (msg.message)
 		{
 		case WM_MOUSEMOVE:
@@ -73,7 +82,6 @@ public:
 			if (status == Status::Pushed)
 			{
 				is_clicked = true;
-				if(!will_hold)
 				status = Status::Idle;
 			}
 			break;
@@ -90,6 +98,11 @@ public:
 	bool cheek_is_clicked()const
 	{
 		return is_clicked;
+	}
+
+	bool cheek_hold()const
+	{
+		return will_hold;
 	}
 
 	int get_button_width()const
@@ -111,7 +124,6 @@ public:
 	{
 		return region.left;
 	}
-
 
 private:
 

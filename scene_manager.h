@@ -50,10 +50,12 @@ public:
 	{
 		current_scene->on_update();
 	}
+	
 	void on_draw()
 	{
 		current_scene->on_draw();
 	}
+	
 	void on_input(const ExMessage& msg)
 	{
 		current_scene->on_input(msg);

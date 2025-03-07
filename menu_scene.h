@@ -62,8 +62,8 @@ public:
 
 	void on_exit()
 	{
-		start.reset_button();
-		setting.reset_button();
+		start.reset_click();
+		setting.reset_click();
 	}
 
 private:

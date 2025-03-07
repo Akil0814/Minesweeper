@@ -55,54 +55,58 @@ public:
 		back.set_top(WINDOW_HEIGHT - back.get_button_height() - space_between_button);
 
 		easy.set_image(&Easy_Idle, &Easy_Hovered, &Easy_Pushed);
-		easy.set_left(space_between_button);
+		easy.set_left(WINDOW_WIDTH / 2 - space_between_button - easy.get_button_width());
 		easy.set_top(space_between_button);
+		easy.set_hold(true);
 
 		normal.set_image(&Normal_Idle, &Normal_Hovered, &Normal_Pushed);
-		normal.set_left(space_between_button);
-		normal.set_top(space_between_button * 2 + easy.get_button_width());
+		normal.set_left(WINDOW_WIDTH /2 + space_between_button);
+		normal.set_top(space_between_button);
+		normal.set_hold(true);
 
 		hard.set_image(&Hard_Idle, &Hard_Hovered, &Hard_Pushed);
-		hard.set_left(space_between_button+easy.get_button_height());
-		hard.set_top(space_between_button);
+		hard.set_left(WINDOW_WIDTH / 2 - space_between_button - hard.get_button_width());
+		hard.set_top(space_between_button*2+easy.get_button_height());
+		hard.set_hold(true);
 
 		expert.set_image(&Expert_Idle, &Expert_Hovered, &Expert_Pushed);
-		expert.set_left(space_between_button + normal.get_button_height());
-		expert.set_top(space_between_button * 2 + hard.get_button_width());
+		expert.set_left(WINDOW_WIDTH / 2 + space_between_button);
+		expert.set_top(space_between_button*2 + normal.get_button_height());
+		expert.set_hold(true);
 
 	}
+
 	void on_update()
 	{
 		if (back.cheek_is_clicked())
 		{
 			scene_manager.switch_to(SceneManager::SceneType::Menu);
-			back.reset_button();
+			back.reset_click();
 		}
 		if (easy.cheek_is_clicked())
 		{
 			current_mod = MOD::Easy;
-			easy.reset_button();
-
+			set_mod();
+			easy.reset_click();
 		}
 		if (normal.cheek_is_clicked())
 		{
 			current_mod = MOD::Normal;
-			normal.reset_button();
-
+			set_mod();
+			normal.reset_click();
 		}
 		if (hard.cheek_is_clicked())
 		{
 			current_mod = MOD::Hard;
-			hard.reset_button();
-
+			set_mod();
+			hard.reset_click();
 		}
 		if (expert.cheek_is_clicked())
 		{
 			current_mod = MOD::Expert;
-			expert.reset_button();
-
+			set_mod();
+			expert.reset_click();
 		}
-		set_mod();
 	}
 
 	void on_draw()
@@ -110,16 +114,13 @@ public:
 		putimage(0, 0, &Setting_background);
 		back.draw();
 		normal.draw();
+		easy.draw();
+		hard.draw();
+		expert.draw();
 	}
 
 	void on_input(const ExMessage& msg)
 	{
-		if (msg.message == WM_LBUTTONDOWN)
-		{
-			int x = msg.x;
-			int y = msg.y;
-			L_button_down = true;
-		}
 		back.process_event(msg);
 		easy.process_event(msg);
 		normal.process_event(msg);
@@ -131,32 +132,43 @@ public:
 
 	void set_mod()
 	{
+		if(current_mod_button!=nullptr)
+			current_mod_button->reset_status();
+
 		switch (current_mod)
 		{
+			cout << "set_mod" << endl;
 		case MOD::Easy:
 			board.set_cols(9);
 			board.set_rows(9);
 			mine.set_mine_count(10);
+			current_mod_button = &easy;
+
 			break;
 		case MOD::Normal:
 			board.set_cols(16);
 			board.set_rows(16);
 			mine.set_mine_count(40);
+			current_mod_button = &normal;
+
 			break;
 		case MOD::Hard:
 			board.set_cols(20);
 			board.set_rows(20);
 			mine.set_mine_count(80);
+			current_mod_button = &hard;
+
 			break;
 		case MOD::Expert:
 			board.set_cols(30);
 			board.set_rows(16);
 			mine.set_mine_count(99);
+			current_mod_button = &expert;
+
 			break;
 		default:
 			break;
 		}
-		board.set_board();
 	}
 
 private:
@@ -168,12 +180,13 @@ private:
 	Button hard;
 	Button expert;
 
+	Button* current_mod_button = nullptr;
+
+
 	MOD current_mod = MOD::Easy;
 
 	int x = msg.x;
 	int y = msg.y;
 	int space_between_button = 10;
-
-	bool L_button_down = false;
 
 };

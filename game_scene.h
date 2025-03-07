@@ -64,12 +64,12 @@ public:
 			{
 				on_exit();
 				board.set_board();
-				restart.reset_button();
+				restart.reset_click();
 			}
 			if (exit.cheek_is_clicked())
 			{
 				scene_manager.switch_to(SceneManager::SceneType::Menu);
-				exit.reset_button();
+				exit.reset_click();
 			}
 	}
 
