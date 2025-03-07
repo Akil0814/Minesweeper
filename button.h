@@ -27,9 +27,9 @@ public:
 		region.right = region.left + img_idle->getwidth();
 	}
 
-	void set_hold(bool hold)
+	void set_hold()
 	{
-		will_hold = hold;
+		will_hold = true;
 	}
 
 	void reset_click()
@@ -37,14 +37,19 @@ public:
 		is_clicked = false;
 	}
 
-	void reset_status()
+	void reset_hold()
 	{
-		status = Status::Idle;
-		std::cout << "reset" <<std:: endl;
+		will_hold=false;
 	}
 
 	void draw()
 	{
+		if (will_hold)
+		{
+			putimage(region.left, region.top, img_pushed);
+			return;
+		}
+
 		switch (status)
 		{
 		case Status::Idle:
@@ -61,8 +66,6 @@ public:
 
 	void process_event(const ExMessage& msg)
 	{
-		if (status == Status::Pushed && will_hold)
-			return;
 
 		switch (msg.message)
 		{
@@ -82,7 +85,8 @@ public:
 			if (status == Status::Pushed)
 			{
 				is_clicked = true;
-				status = Status::Idle;
+				if(!will_hold)
+					status = Status::Idle;
 			}
 			break;
 		default:

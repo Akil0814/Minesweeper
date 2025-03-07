@@ -29,18 +29,13 @@ extern Mine mine;
 
 class SelectorScene :public Scene
 {
-public:
-	enum class MOD
-	{
-		Easy=0,
-		Normal,
-		Hard,
-		Expert
-		//Custom
-	};
+
 
 public:
-	SelectorScene() = default;
+	SelectorScene()
+	{
+		easy.set_hold();
+	}
 
 	~SelectorScene() = default;
 
@@ -57,23 +52,18 @@ public:
 		easy.set_image(&Easy_Idle, &Easy_Hovered, &Easy_Pushed);
 		easy.set_left(WINDOW_WIDTH / 2 - space_between_button - easy.get_button_width());
 		easy.set_top(space_between_button);
-		easy.set_hold(true);
 
 		normal.set_image(&Normal_Idle, &Normal_Hovered, &Normal_Pushed);
 		normal.set_left(WINDOW_WIDTH /2 + space_between_button);
 		normal.set_top(space_between_button);
-		normal.set_hold(true);
 
 		hard.set_image(&Hard_Idle, &Hard_Hovered, &Hard_Pushed);
 		hard.set_left(WINDOW_WIDTH / 2 - space_between_button - hard.get_button_width());
 		hard.set_top(space_between_button*2+easy.get_button_height());
-		hard.set_hold(true);
 
 		expert.set_image(&Expert_Idle, &Expert_Hovered, &Expert_Pushed);
 		expert.set_left(WINDOW_WIDTH / 2 + space_between_button);
 		expert.set_top(space_between_button*2 + normal.get_button_height());
-		expert.set_hold(true);
-
 	}
 
 	void on_update()
@@ -133,11 +123,10 @@ public:
 	void set_mod()
 	{
 		if(current_mod_button!=nullptr)
-			current_mod_button->reset_status();
+			current_mod_button->reset_hold();
 
 		switch (current_mod)
 		{
-			cout << "set_mod" << endl;
 		case MOD::Easy:
 			board.set_cols(9);
 			board.set_rows(9);
@@ -169,7 +158,18 @@ public:
 		default:
 			break;
 		}
+		current_mod_button->set_hold();
 	}
+
+private:
+	enum class MOD
+	{
+		Easy = 0,
+		Normal,
+		Hard,
+		Expert
+		//Custom
+	};
 
 private:
 
@@ -180,7 +180,7 @@ private:
 	Button hard;
 	Button expert;
 
-	Button* current_mod_button = nullptr;
+	Button* current_mod_button = &easy;
 
 
 	MOD current_mod = MOD::Easy;
