@@ -34,7 +34,7 @@ public:
 		start.set_left((WINDOW_WIDTH - start.get_button_width()) / 2);
 
 		setting.set_image(&Menu_Setting_Idle, &Menu_Setting_Hovered, &Menu_Setting_Pushed);
-		setting.set_top(start.cheek_top()+ start.get_button_height()+10);
+		setting.set_top(start.cheek_top()+ start.get_button_height()+ space_between_button);
 		setting.set_left(start.cheek_left());
 
 	}
@@ -70,5 +70,6 @@ private:
 	Button setting;
 	Button start;
 
+	int space_between_button = 10;
 	bool is_click=false;
 };

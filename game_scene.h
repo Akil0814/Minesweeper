@@ -8,6 +8,8 @@
 
 extern ExMessage msg;
 extern IMAGE Bar;
+extern IMAGE MineBase;
+
 
 extern IMAGE Restart_Idle;
 extern IMAGE Restart_Hovered;
@@ -35,11 +37,11 @@ public:
 		WINDOW_HEIGHT = board.cheek_row()*mine.get_mine_width()+Bar.getheight();
 
 		restart.set_image(&Restart_Idle, &Restart_Hovered, &Restart_Pushed);
-		restart.set_left(WINDOW_WIDTH - restart.get_button_width() - 10);
-		restart.set_top(WINDOW_HEIGHT - restart.get_button_height() - 10);
+		restart.set_left(WINDOW_WIDTH - restart.get_button_width() - space_between_button);
+		restart.set_top(WINDOW_HEIGHT - restart.get_button_height() - space_between_button);
 
 		exit.set_image(&Exit_Idle, &Exit_Hovered, &Exit_Pushed);
-		exit.set_left(restart.cheek_left()-exit.get_button_width()-10);
+		exit.set_left(restart.cheek_left()-exit.get_button_width()- space_between_button);
 		exit.set_top(restart.cheek_top());
 
 		initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -73,28 +75,35 @@ public:
 
 	void on_draw()
 	{
-		game_end = board.cheek_game_end();
-		if (game_end)
+
+		if (board.cheek_game_end())
 		{
 			board.show_all_mine();
 		}
 		else
-		board.draw_board();
+		{
+			board.draw_board();
+		}
 
 		putimage(0, board.get_height(), &Bar);
+		putimage(space_between_button, board.get_height()+ space_between_button, &MineBase);
+
 		restart.draw();
 		exit.draw();
+		draw_tip_text();
+
 	}
 
 	void on_input(const ExMessage& msg)
 	{
-		if (msg.x > 0 && msg.x < board.get_width() && msg.y>0 && msg.y < board.get_height()&&!game_end)
+		if (msg.x > 0 && msg.x < board.get_width() && msg.y>0 && msg.y < board.get_height()&&!board.cheek_game_end())
 		{
 			if (msg.message == WM_LBUTTONDOWN)
 			{
 				L_button_down = true;
 				x_index = (msg.x / mine.get_mine_width() + 1);
 				y_index = (msg.y / mine.get_mine_width() + 1);
+
 				if (waiting_for_first_click)
 				{
 					board.set_mine(y_index, x_index);
@@ -107,6 +116,7 @@ public:
 				R_button_down = true;
 				x_index = (msg.x / mine.get_mine_width() + 1);
 				y_index = (msg.y / mine.get_mine_width() + 1);
+
 			}
 		}
 
@@ -118,7 +128,15 @@ public:
 	{
 		board.reset_board_data();
 		waiting_for_first_click = true;
-		game_end = false;
+	}
+
+	void draw_tip_text()
+	{
+		setbkmode(TRANSPARENT);
+		static TCHAR str[32];
+		_stprintf_s(str, _T(":%d"), board.get_num_of_mine_left());
+		settextcolor(RGB(0,0,0));
+		outtextxy(MineBase.getheight() + space_between_button, board.get_height() + space_between_button*1.5, str);
 	}
 
 private:
@@ -126,13 +144,14 @@ private:
 	Button restart;
 	Button exit;
 
+	int space_between_button = 10;
+
 	int x_index =-1;
 	int y_index =-1;
 
 	bool L_button_down = false;
 	bool R_button_down = false;
 
-	bool game_end = false;
 	bool waiting_for_first_click = true;
 
 };

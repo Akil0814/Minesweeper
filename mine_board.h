@@ -8,6 +8,9 @@ using namespace std;
 #define IS_MINE 1 
 #define IS_CHEAKED 2
 #define IS_FLAG 3
+#define KEEP_SPACE_EMPTY 1
+#define RESET 0
+
 
 extern Mine mine;
 
@@ -25,8 +28,8 @@ extern IMAGE MineCover;
 
 extern IMAGE MineExplode;
 extern IMAGE MineFined;
+extern IMAGE MineWin;
 
-extern IMAGE MineBase;
 
 class MineBoard
 {
@@ -36,8 +39,11 @@ public:
 
 	void set_board()
 	{
+		num_of_flag = 0;
 		width = mine.get_mine_width();
 		num_of_mine = mine.get_mine_count();
+		num_of_mine_left = mine.get_mine_count();
+		num_of_cover = (row_show * col_show) - num_of_mine;
 
 		board_mine.resize(row_mine, vector<int>(col_mine, IS_EMPTY));
 		board_show.resize(row_mine, vector<int>(col_mine, IS_EMPTY));
@@ -46,20 +52,23 @@ public:
 
 	void set_mine(const int index_x,const int index_y)
 	{
+
+
 		int count = num_of_mine;
 
-			board_mine[index_x][index_y] = 1;
-		if(15 <(row_show * col_show)- num_of_mine)
-		{
-			board_mine[index_x + 1][index_y] = 1;
-			board_mine[index_x - 1][index_y] = 1;
-			board_mine[index_x][index_y + 1] = 1;
-			board_mine[index_x][index_y - 1] = 1;
-			board_mine[index_x - 1][index_y - 1] = 1;
-			board_mine[index_x + 1][index_y - 1] = 1;
-			board_mine[index_x - 1][index_y + 1] = 1;
-			board_mine[index_x + 1][index_y + 1] = 1;
-		}
+			board_mine[index_x][index_y] = KEEP_SPACE_EMPTY;
+			if (15 < (row_show * col_show) - num_of_mine)
+			{
+				board_mine[index_x + 1][index_y] = KEEP_SPACE_EMPTY;
+				board_mine[index_x - 1][index_y] = KEEP_SPACE_EMPTY;
+				board_mine[index_x][index_y + 1] = KEEP_SPACE_EMPTY;
+				board_mine[index_x][index_y - 1] = KEEP_SPACE_EMPTY;
+				board_mine[index_x - 1][index_y - 1] = KEEP_SPACE_EMPTY;
+				board_mine[index_x + 1][index_y - 1] = KEEP_SPACE_EMPTY;
+				board_mine[index_x - 1][index_y + 1] = KEEP_SPACE_EMPTY;
+				board_mine[index_x + 1][index_y + 1] = KEEP_SPACE_EMPTY;
+			}
+
 
 		while (count>0)
 		{
@@ -73,17 +82,18 @@ public:
 			}
 		}
 
-			board_mine[index_x][index_y] = 0;
-		if (15 < (row_show * col_show) - num_of_mine)
-		{
-			board_mine[index_x + 1][index_y] = 0;
-			board_mine[index_x - 1][index_y] = 0;
-			board_mine[index_x][index_y + 1] = 0;
-			board_mine[index_x][index_y - 1] = 0;
-			board_mine[index_x - 1][index_y - 1] = 0;
-			board_mine[index_x + 1][index_y - 1] = 0;
-			board_mine[index_x - 1][index_y + 1] = 0;
-			board_mine[index_x + 1][index_y + 1] = 0;
+
+			board_mine[index_x][index_y] = RESET;
+			if (15 < (row_show * col_show) - num_of_mine)
+			{
+				board_mine[index_x + 1][index_y] = RESET;
+				board_mine[index_x - 1][index_y] = RESET;
+				board_mine[index_x][index_y + 1] = RESET;
+				board_mine[index_x][index_y - 1] = RESET;
+				board_mine[index_x - 1][index_y - 1] = RESET;
+				board_mine[index_x + 1][index_y - 1] = RESET;
+				board_mine[index_x - 1][index_y + 1] = RESET;
+				board_mine[index_x + 1][index_y + 1] = RESET;
 		}
 
 		for (int i = 1; i <= row_show; i++)
@@ -98,10 +108,13 @@ public:
 	{
 		for (int i = 1; i <= row_show; i++)
 		{
+
 			for (int j = 1; j <= col_show; j++)
 			{
+
 				if (board_show[i][j] == IS_CHEAKED)
 				{
+
 					int num = board_num[i][j];
 					switch (num)
 					{
@@ -134,6 +147,7 @@ public:
 						break;
 					default:
 						break;
+
 					}
 				}
 				if (board_show[i][j] == IS_EMPTY)
@@ -201,7 +215,10 @@ public:
 				}
 				if (board_show[i][j] == IS_EMPTY && board_mine[i][j]==IS_MINE)
 				{
-					putimage((j - 1) * width, (i - 1) * width, &MineExplode);
+					if(!num_of_cover)
+						putimage((j - 1) * width, (i - 1) * width, &MineWin);
+					else
+						putimage((j - 1) * width, (i - 1) * width, &MineExplode);
 				}
 				if (board_show[i][j] == IS_FLAG && board_mine[i][j] == IS_MINE)
 				{
@@ -235,10 +252,17 @@ public:
 		if (board_show[x][y] == IS_EMPTY)
 		{
 			board_show[x][y] = IS_FLAG;
-			}
+			num_of_flag++;
+			if(num_of_mine_left>0)
+				num_of_mine_left--;
+
+		}
 		else if (board_show[x][y] == IS_FLAG)
 		{
 			board_show[x][y] = IS_EMPTY;
+			num_of_flag--;
+			if ( num_of_flag<num_of_mine)
+				num_of_mine_left++;
 		}
 	}
 
@@ -266,7 +290,7 @@ public:
 
 	bool cheek_game_end()const
 	{
-		return is_game_end;
+		return is_game_end|| !num_of_cover;
 	}
 
 	void reset_board_data()
@@ -286,6 +310,11 @@ public:
 	int get_height()const
 	{
 		return row_show * width;
+	}
+
+	int get_num_of_mine_left()const
+	{
+		return num_of_mine_left;
 	}
 
 private:
@@ -332,12 +361,14 @@ private:
 	vector<vector<int>>board_show;
 	vector<vector<int>>board_num;
 
-	int row_show = 10;
-	int col_show = 10;
+	int row_show = 9;
+	int col_show = 9;
 	int row_mine = row_show+2;
 	int col_mine = col_show+2;
 
+	int num_of_flag = 0;
 	int num_of_mine= mine.get_mine_count();
+	int num_of_mine_left = mine.get_mine_count();
 	int num_of_cover = (row_show * col_show) - num_of_mine;
 	int width = mine.get_mine_width();
 

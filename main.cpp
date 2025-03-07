@@ -18,6 +18,25 @@ IMAGE Menu_Setting_Idle;
 IMAGE Menu_Setting_Hovered;
 IMAGE Menu_Setting_Pushed;
 
+IMAGE Setting_background;
+IMAGE Setting_Back_Idle;
+IMAGE Setting_Back_Hovered;
+IMAGE Setting_Back_Pushed;
+
+IMAGE Easy_Idle;
+IMAGE Easy_Hovered;
+IMAGE Easy_Pushed;
+IMAGE Normal_Idle;
+IMAGE Normal_Hovered;
+IMAGE Normal_Pushed;
+IMAGE Hard_Idle;
+IMAGE Hard_Hovered;
+IMAGE Hard_Pushed;
+IMAGE Expert_Idle;
+IMAGE Expert_Hovered;
+IMAGE Expert_Pushed;
+
+
 IMAGE MineExplode;
 IMAGE MineCover;
 IMAGE Num1;
@@ -31,6 +50,7 @@ IMAGE Num8;
 IMAGE Base;
 IMAGE MineMarked;
 IMAGE MineFined;
+IMAGE MineWin;
 IMAGE MineBase;
 IMAGE Bar;
 
@@ -51,6 +71,32 @@ Mine mine;
 
 void LoadResource()
 {
+
+	loadimage(&Setting_background, _T("res/Setting_background.png"));
+	loadimage(&Setting_Back_Idle, _T("res/Setting_Back_Idle.png"));
+	loadimage(&Setting_Back_Hovered, _T("res/Setting_Back_Hovered.png"));
+	loadimage(&Setting_Back_Pushed, _T("res/Setting_Back_Pushed.png"));
+
+	loadimage(&Setting_Back_Idle, _T("res/Setting_Back_Idle.png"));
+	loadimage(&Setting_Back_Hovered, _T("res/Setting_Back_Hovered.png"));
+	loadimage(&Setting_Back_Pushed, _T("res/Setting_Back_Pushed.png"));
+
+	loadimage(&Easy_Idle, _T("res/Easy_Idle.png"));
+	loadimage(&Easy_Hovered, _T("res/Easy_Hovered.png"));
+	loadimage(&Easy_Pushed, _T("res/Easy_Pushed.png"));
+
+	loadimage(&Normal_Idle, _T("res/Normal_Idle.png"));
+	loadimage(&Normal_Hovered, _T("res/Normal_Hovered.png"));
+	loadimage(&Normal_Pushed, _T("res/Normal_Pushed.png"));
+
+	loadimage(&Hard_Idle, _T("res/Hard_Idle.png"));
+	loadimage(&Hard_Hovered, _T("res/Hard_Hovered.png"));
+	loadimage(&Hard_Pushed, _T("res/Hard_Pushed.png"));
+
+	loadimage(&Expert_Idle, _T("res/Expert_Idle.png"));
+	loadimage(&Expert_Hovered, _T("res/Expert_Hovered.png"));
+	loadimage(&Expert_Pushed, _T("res/Expert_Pushed.png"));
+
 	loadimage(&Menu_background, _T("res/Menu_back_ground.png"));
 	loadimage(&Menu_Start_Idle, _T("res/Menu_Start_Idle.png"));
 	loadimage(&Menu_Start_Hovered, _T("res/Menu_Start_Hovered.png"));
@@ -59,7 +105,6 @@ void LoadResource()
 	loadimage(&Menu_Setting_Hovered, _T("res/Menu_Setting_Hovered.png"));
 	loadimage(&Menu_Setting_Pushed, _T("res/Menu_Setting_Pushed.png"));
 
-	loadimage(&MineExplode, _T("res/MineExplode.png"));
 	loadimage(&MineCover, _T("res/MineCover.png"));
 	loadimage(&Num1, _T("res/Num1.png"));
 	loadimage(&Num2, _T("res/Num2.png"));
@@ -72,9 +117,11 @@ void LoadResource()
 	loadimage(&Base, _T("res/Base.png"));
 	loadimage(&MineMarked, _T("res/MineMarked.png"));
 	loadimage(&MineFined, _T("res/MineFined.png"));
-	loadimage(&MineBase, _T("res/MineBase.png"));
+	loadimage(&MineExplode, _T("res/MineExplode.png"));
+	loadimage(&MineWin, _T("res/MineWin.png"));
 
 	loadimage(&Bar, _T("res/Bar.png"));
+	loadimage(&MineBase, _T("res/MineBase.png"));
 	loadimage(&Restart_Idle, _T("res/Restart_Idle.png"));
 	loadimage(&Restart_Hovered, _T("res/Restart_Hovered.png"));
 	loadimage(&Restart_Pushed, _T("res/Restart_Pushed.png"));

@@ -26,9 +26,15 @@ public:
 		region.right = region.left + img_idle->getwidth();
 	}
 
+	void set_hold(bool hold)
+	{
+		bool will_hold = hold;
+	}
+
 	void reset_button()
 	{
 		is_clicked = false;
+		status = Status::Idle;
 	}
 
 	void draw()
@@ -67,6 +73,7 @@ public:
 			if (status == Status::Pushed)
 			{
 				is_clicked = true;
+				if(!will_hold)
 				status = Status::Idle;
 			}
 			break;
@@ -118,6 +125,7 @@ private:
 private:
 
 	bool is_clicked = false;
+	bool will_hold = false;
 
 	RECT region={0,0,0,0};
 	IMAGE* img_idle=nullptr;
