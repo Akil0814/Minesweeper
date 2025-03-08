@@ -183,19 +183,8 @@ public:
 
 	void on_input(const ExMessage& msg)
 	{
-		if (WM_KEYDOWN)
-		{
-			key_down = true;
-			if (WM_KEYUP)
-			{
-				key_down = false;
-				if (read_keyboard == true)
-				{
-					read_form_keyboard(msg);
-				}
-			}
-		}
-
+		if(read_keyboard)
+			read_form_keyboard(msg);
 		back.process_event(msg);
 		easy.process_event(msg);
 		normal.process_event(msg);
@@ -208,7 +197,10 @@ public:
 		custom_mine.process_event(msg);
 	}
 
-	void on_exit(){}
+	void on_exit()
+	{
+		set_mod();
+	}
 
 private:
 	void set_mod()
@@ -252,8 +244,13 @@ private:
 			break;
 		}
 
+		if (col_count * row_count <= mine_count)
+		{
+			mine_count = col_count * row_count - 1;
+		}
 		set_board_mod(col_count, row_count, mine_count);
 		current_mod_button->set_hold();
+
 	}
 
 	void  set_board_mod(int mod_col,int mod_row,int mod_mine_count)
@@ -265,6 +262,8 @@ private:
 
 	void set_customize()
 	{
+		all_input.clear();
+
 		if (current_mod_button != nullptr&& current_mod_button != &custom)
 				current_mod_button->reset_hold();
 		if (current_customize_button != nullptr)
@@ -297,71 +296,60 @@ private:
 
 	void read_form_keyboard(const ExMessage& msg)
 	{
-		if (all_input.size() < max_num_for_input) {
-			if (msg.vkcode >= 0 && msg.vkcode <= 9) {
-				int num = msg.vkcode; 
-				all_input.push_back(num);
-			}
-			else if (msg.vkcode == VK_RETURN) {
-				counter_input = 0;
-				for (int num : all_input) {
-					*counter_input = (*counter_input) * 10 + num;
-				}
-				all_input.clear();
-				std::cout << "Input number: " << counter_input << std::endl;
-			}
-		}
-
-		/*if (counter_for_arr < max_num_for_input)
+		switch (msg.message)
 		{
-			switch (msg.vkcode)
+		case WM_KEYDOWN:
+			if (msg.vkcode >= 0x30 && msg.vkcode <= 0x39&& all_input.size()<3)
 			{
-			case 0:
-				tmp_num_for_input = 0;
-				counter_for_arr++;
-				break;
-			case 1:
-				tmp_num_for_input = 1;
-				counter_for_arr++;
-				break;
-			case 2:
-				tmp_num_for_input = 2;
-				counter_for_arr++;
-				break;
-			case 3:
-				tmp_num_for_input = 3;
-				counter_for_arr++;
-				break;
-			case 4:
-				tmp_num_for_input = 4;
-				counter_for_arr++;
-				break;
-			case 5:
-				tmp_num_for_input = 5;
-				counter_for_arr++;
-				break;
-			case 6:
-				tmp_num_for_input = 6;
-				counter_for_arr++;
-				break;
-			case 7:
-				tmp_num_for_input = 7;
-				counter_for_arr++;
-				break;
-			case 8:
-				tmp_num_for_input = 8;
-				counter_for_arr++;
-				break;
-			case 9:
-				tmp_num_for_input = 9;
-				counter_for_arr++;
-				break;
-			default:
-				break;
+				switch (msg.vkcode)
+				{
+				case 0x30:
+					tmp_num_for_input = 0;
+					break;
+				case 0x31:
+					tmp_num_for_input = 1;
+					break;
+				case 0x32:
+					tmp_num_for_input = 2;
+					break;
+				case 0x33:
+					tmp_num_for_input = 3;
+					break;
+				case 0x34:
+					tmp_num_for_input = 4;
+					break;
+				case 0x35:
+					tmp_num_for_input = 5;
+					break;
+				case 0x36:
+					tmp_num_for_input = 6;
+					break;
+				case 0x37:
+					tmp_num_for_input = 7;
+					break;
+				case 0x38:
+					tmp_num_for_input = 8;
+					break;
+				case 0x39:
+					tmp_num_for_input = 9;
+					break;
+				default:
+					break;
+				}
+
+				all_input.push_back(tmp_num_for_input);
+				vector<int> tmp(all_input);
+				tmp_num_for_loop = 0;
+				for (int i = 1; !tmp.empty(); i *= 10)
+				{
+					int t = tmp.back();
+					tmp_num_for_loop = tmp_num_for_loop + t * i;
+					tmp.pop_back();
+				}
+				*counter_input = tmp_num_for_loop;
 			}
-			all_input[counter_for_arr] = tmp_num_for_input;
+		break;
 		}
-		counter_input=all_input[counter_for_arr]*/
 	}
 
 	void draw_tip_text_row()
@@ -406,22 +394,19 @@ private:
 
 private:
 
-	char ch;
-
 	const int size_of_text = 28;
 	const int space_between_button = 10;
-	static const int max_num_for_input = 10;
+	static const int max_num_for_input = 999;
 
 	int col_count = board.cheek_col();
 	int row_count = board.cheek_row();
 	int mine_count = mine.get_mine_count();
 	int* counter_input = nullptr;
 
-	int counter_for_arr = 0;
 	vector<int>all_input;
 	int tmp_num_for_input=0;
+	int tmp_num_for_loop = 0;
 
-	bool key_down = false;
 	bool read_keyboard = false;
 
 	Button back;
