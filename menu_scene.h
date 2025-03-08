@@ -3,7 +3,6 @@
 #include "scene.h"
 #include"button.h"
 
-#include<iostream>
 using namespace std;
 
 extern IMAGE Menu_background;

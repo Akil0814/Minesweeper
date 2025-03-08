@@ -4,7 +4,7 @@
 #include "scene_manager.h"
 #include"button.h"
 
-#include<iostream>
+#include <chrono>
 
 extern ExMessage msg;
 extern IMAGE Bar;
@@ -50,6 +50,15 @@ public:
 
 	void on_update()
 	{
+			game_time_curren = chrono::steady_clock::now();
+			if (!waiting_for_first_click && !board.cheek_game_end())
+			{
+				duration = std::chrono::duration_cast<std::chrono::seconds>(game_time_curren - game_start_time);
+				hours = std::chrono::duration_cast<std::chrono::hours>(duration).count();
+				minutes = std::chrono::duration_cast<std::chrono::minutes>(duration).count() % 60;
+				seconds = std::chrono::duration_cast<std::chrono::seconds>(duration).count() % 60;
+			}
+
 			if (L_button_down)
 			{
 				L_button_down = false;
@@ -90,7 +99,8 @@ public:
 
 		restart.draw();
 		exit.draw();
-		draw_tip_text();
+		draw_tip_text_mine();
+			draw_tip_text_time();
 
 	}
 
@@ -108,6 +118,7 @@ public:
 				{
 					board.set_mine(y_index, x_index);
 					waiting_for_first_click = false;
+					game_start_time = chrono::steady_clock::now();
 				}
 
 			}
@@ -128,15 +139,30 @@ public:
 	{
 		board.reset_board_data();
 		waiting_for_first_click = true;
+		hours = 0;
+		minutes = 0;
+		seconds = 0;
 	}
 
-	void draw_tip_text()
+
+private:
+	void draw_tip_text_mine()
 	{
 		setbkmode(TRANSPARENT);
 		static TCHAR str[32];
 		_stprintf_s(str, _T(":%d"), board.get_num_of_mine_left());
-		settextcolor(RGB(0,0,0));
+		settextcolor(RGB(229, 65, 65));
 		outtextxy(MineBase.getheight() + space_between_button, board.get_height() + space_between_button*1.5, str);
+	}
+
+	void draw_tip_text_time()
+	{
+		setbkmode(TRANSPARENT);
+		static TCHAR str[50];
+
+		_stprintf_s(str, _T("%02d:%02d:%02d"),hours, minutes,seconds);
+		settextcolor(RGB(229, 65, 65));
+		outtextxy(MineBase.getheight() + space_between_button*5, board.get_height() + space_between_button * 1.5, str);
 	}
 
 private:
@@ -153,5 +179,13 @@ private:
 	bool R_button_down = false;
 
 	bool waiting_for_first_click = true;
+
+	int hours = 0;
+	int minutes = 0;
+	int seconds = 0;
+	std::chrono::steady_clock::time_point game_start_time = chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point game_time_curren = chrono::steady_clock::now();
+	std::chrono::seconds duration = std::chrono::duration_cast<std::chrono::seconds>(game_time_curren - game_start_time);
+
 
 };

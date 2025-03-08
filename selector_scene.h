@@ -4,7 +4,10 @@
 #include"button.h"
 #include"mine_board.h"
 #include"mine.h"
+
 #include<iostream>
+#include<vector>
+#include <conio.h> 
 
 extern IMAGE Setting_background;
 extern IMAGE Setting_Back_Idle;
@@ -23,14 +26,21 @@ extern IMAGE Hard_Pushed;
 extern IMAGE Expert_Idle;
 extern IMAGE Expert_Hovered;
 extern IMAGE Expert_Pushed;
+extern IMAGE Custom_Idle;
+extern IMAGE Custom_Hovered;
+extern IMAGE Custom_Pushed;
+extern IMAGE Custom_row;
+extern IMAGE Custom_col;
+extern IMAGE Custom_mine;
+extern IMAGE Custom_row_Editing;
+extern IMAGE Custom_col_Editing;
+extern IMAGE Custom_mine_Editing;
 
 extern MineBoard board;
 extern Mine mine;
 
 class SelectorScene :public Scene
 {
-
-
 public:
 	SelectorScene()
 	{
@@ -41,6 +51,7 @@ public:
 
 	void on_enter()
 	{
+
 		WINDOW_WIDTH = Setting_background.getwidth();
 		WINDOW_HEIGHT = Setting_background.getheight();
 		initgraph(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -64,6 +75,22 @@ public:
 		expert.set_image(&Expert_Idle, &Expert_Hovered, &Expert_Pushed);
 		expert.set_left(WINDOW_WIDTH / 2 + space_between_button);
 		expert.set_top(space_between_button*2 + normal.get_button_height());
+
+		custom.set_image(&Custom_Idle, &Custom_Hovered, &Custom_Pushed);
+		custom.set_left((WINDOW_WIDTH-custom.get_button_width()) / 2);
+		custom.set_top(space_between_button * 2+ expert.get_button_height()+expert.cheek_top());
+
+		custom_row.set_image(&Custom_row, &Custom_row, &Custom_row_Editing);
+		custom_row.set_left(space_between_button * 6);
+		custom_row.set_top(space_between_button * 2 + custom.get_button_height() + custom.cheek_top());
+
+		custom_col.set_image(&Custom_col, &Custom_col, &Custom_col_Editing);
+		custom_col.set_left(space_between_button * 6);
+		custom_col.set_top(space_between_button * 2 + custom_row.get_button_height() + custom_row.cheek_top());
+
+		custom_mine.set_image(&Custom_mine, &Custom_mine, &Custom_mine_Editing);
+		custom_mine.set_left(space_between_button * 6);
+		custom_mine.set_top(space_between_button * 2 + custom_col.get_button_height() + custom_col.cheek_top());
 	}
 
 	void on_update()
@@ -73,6 +100,7 @@ public:
 			scene_manager.switch_to(SceneManager::SceneType::Menu);
 			back.reset_click();
 		}
+
 		if (easy.cheek_is_clicked())
 		{
 			current_mod = MOD::Easy;
@@ -97,6 +125,40 @@ public:
 			set_mod();
 			expert.reset_click();
 		}
+		if (custom.cheek_is_clicked())
+		{
+			current_mod = MOD::Custom;
+			set_mod();
+			custom.reset_click();
+		}
+
+		if (custom_row.cheek_is_clicked())
+		{
+			current_mod = MOD::Custom;
+			current_custom_input= Custom_Input::row;
+			set_customize();
+			set_mod();
+			read_keyboard = true;
+			custom_row.reset_click();
+		}
+		if (custom_col.cheek_is_clicked())
+		{
+			current_mod = MOD::Custom;
+			current_custom_input= Custom_Input::col;
+			set_customize();
+			set_mod();
+			read_keyboard = true;
+			custom_col.reset_click();
+		}
+		if (custom_mine.cheek_is_clicked())
+		{
+			current_mod = MOD::Custom;
+			current_custom_input= Custom_Input::mine;
+			set_customize();
+			set_mod();
+			read_keyboard = true;
+			custom_mine.reset_click();
+		}
 	}
 
 	void on_draw()
@@ -107,58 +169,222 @@ public:
 		easy.draw();
 		hard.draw();
 		expert.draw();
+		custom.draw();
+		custom_row.draw();
+		custom_col.draw();
+		custom_mine.draw();
+
+		setbkmode(TRANSPARENT);
+		settextstyle(size_of_text, 0, _T("System"), 0, 0, FW_BOLD, FALSE, FALSE, FALSE);
+		draw_tip_text_col();
+		draw_tip_text_row();
+		draw_tip_text_mine();
 	}
 
 	void on_input(const ExMessage& msg)
 	{
+		if (WM_KEYDOWN)
+		{
+			key_down = true;
+			if (WM_KEYUP)
+			{
+				key_down = false;
+				if (read_keyboard == true)
+				{
+					read_form_keyboard(msg);
+				}
+			}
+		}
+
 		back.process_event(msg);
 		easy.process_event(msg);
 		normal.process_event(msg);
 		hard.process_event(msg);
 		expert.process_event(msg);
+
+		custom.process_event(msg);
+		custom_row.process_event(msg);
+		custom_col.process_event(msg);
+		custom_mine.process_event(msg);
 	}
 
 	void on_exit(){}
 
+private:
 	void set_mod()
 	{
+		read_keyboard = false;
+
 		if(current_mod_button!=nullptr)
 			current_mod_button->reset_hold();
+		if (current_customize_button != nullptr&& current_mod!= MOD::Custom)
+			current_customize_button->reset_hold();
 
 		switch (current_mod)
 		{
 		case MOD::Easy:
-			board.set_cols(9);
-			board.set_rows(9);
-			mine.set_mine_count(10);
+			col_count = 9;
+			row_count = 9;
+			mine_count = 10;
 			current_mod_button = &easy;
-
 			break;
 		case MOD::Normal:
-			board.set_cols(16);
-			board.set_rows(16);
-			mine.set_mine_count(40);
+			col_count = 16;
+			row_count = 16;
+			mine_count = 40;
 			current_mod_button = &normal;
-
 			break;
 		case MOD::Hard:
-			board.set_cols(20);
-			board.set_rows(20);
-			mine.set_mine_count(80);
+			col_count = 20;
+			row_count = 20;
+			mine_count = 80;
 			current_mod_button = &hard;
-
 			break;
 		case MOD::Expert:
-			board.set_cols(30);
-			board.set_rows(16);
-			mine.set_mine_count(99);
+			col_count = 30;
+			row_count = 16;
+			mine_count = 99;
 			current_mod_button = &expert;
+			break;
+		case MOD::Custom:
+			current_mod_button = &custom;	
+		default:
+			break;
+		}
+
+		set_board_mod(col_count, row_count, mine_count);
+		current_mod_button->set_hold();
+	}
+
+	void  set_board_mod(int mod_col,int mod_row,int mod_mine_count)
+	{	
+		board.set_cols(mod_col);
+		board.set_rows(mod_row);
+		mine.set_mine_count(mod_mine_count);
+	}
+
+	void set_customize()
+	{
+		if (current_mod_button != nullptr&& current_mod_button != &custom)
+				current_mod_button->reset_hold();
+		if (current_customize_button != nullptr)
+			current_customize_button->reset_hold();
+
+		switch (current_custom_input)
+		{
+		case Custom_Input::col:
+			current_customize_button = &custom_col;
+			counter_input = &col_count;
+
+			break;
+		case Custom_Input::row:
+			current_customize_button = &custom_row;
+			counter_input = &row_count;
+
+			break;
+		case Custom_Input::mine:
+			current_customize_button = &custom_mine;
+			counter_input = &mine_count;
 
 			break;
 		default:
 			break;
 		}
+
+		current_customize_button->set_hold();
 		current_mod_button->set_hold();
+	}
+
+	void read_form_keyboard(const ExMessage& msg)
+	{
+		if (all_input.size() < max_num_for_input) {
+			if (msg.vkcode >= 0 && msg.vkcode <= 9) {
+				int num = msg.vkcode; 
+				all_input.push_back(num);
+			}
+			else if (msg.vkcode == VK_RETURN) {
+				counter_input = 0;
+				for (int num : all_input) {
+					*counter_input = (*counter_input) * 10 + num;
+				}
+				all_input.clear();
+				std::cout << "Input number: " << counter_input << std::endl;
+			}
+		}
+
+		/*if (counter_for_arr < max_num_for_input)
+		{
+			switch (msg.vkcode)
+			{
+			case 0:
+				tmp_num_for_input = 0;
+				counter_for_arr++;
+				break;
+			case 1:
+				tmp_num_for_input = 1;
+				counter_for_arr++;
+				break;
+			case 2:
+				tmp_num_for_input = 2;
+				counter_for_arr++;
+				break;
+			case 3:
+				tmp_num_for_input = 3;
+				counter_for_arr++;
+				break;
+			case 4:
+				tmp_num_for_input = 4;
+				counter_for_arr++;
+				break;
+			case 5:
+				tmp_num_for_input = 5;
+				counter_for_arr++;
+				break;
+			case 6:
+				tmp_num_for_input = 6;
+				counter_for_arr++;
+				break;
+			case 7:
+				tmp_num_for_input = 7;
+				counter_for_arr++;
+				break;
+			case 8:
+				tmp_num_for_input = 8;
+				counter_for_arr++;
+				break;
+			case 9:
+				tmp_num_for_input = 9;
+				counter_for_arr++;
+				break;
+			default:
+				break;
+			}
+			all_input[counter_for_arr] = tmp_num_for_input;
+		}
+		counter_input=all_input[counter_for_arr]*/
+	}
+
+	void draw_tip_text_row()
+	{
+		
+		static TCHAR str[12];
+		_stprintf_s(str, _T("Row:%d"), row_count);
+		settextcolor(RGB(0, 0, 0));
+		outtextxy(custom_row.cheek_left() + space_between_button, custom_row.cheek_top() + space_between_button, str);
+	}
+	void draw_tip_text_col()
+	{
+		static TCHAR str[12];
+		_stprintf_s(str, _T("Col:%d"),col_count);
+		settextcolor(RGB(0, 0, 0));
+		outtextxy(custom_col.cheek_left() + space_between_button, custom_col.cheek_top()+ space_between_button,str);
+	}
+	void draw_tip_text_mine()
+	{
+		static TCHAR str[12];
+		_stprintf_s(str, _T("Mine:%d"), mine_count);
+		settextcolor(RGB(0, 0, 0));
+		outtextxy(custom_mine.cheek_left() + space_between_button, custom_mine.cheek_top() + space_between_button, str);
 	}
 
 private:
@@ -167,11 +393,36 @@ private:
 		Easy = 0,
 		Normal,
 		Hard,
-		Expert
-		//Custom
+		Expert,
+		Custom
+	};
+
+	enum class Custom_Input
+	{
+		col=0,
+		row,
+		mine
 	};
 
 private:
+
+	char ch;
+
+	const int size_of_text = 28;
+	const int space_between_button = 10;
+	static const int max_num_for_input = 10;
+
+	int col_count = board.cheek_col();
+	int row_count = board.cheek_row();
+	int mine_count = mine.get_mine_count();
+	int* counter_input = nullptr;
+
+	int counter_for_arr = 0;
+	vector<int>all_input;
+	int tmp_num_for_input=0;
+
+	bool key_down = false;
+	bool read_keyboard = false;
 
 	Button back;
 
@@ -179,14 +430,18 @@ private:
 	Button normal;
 	Button hard;
 	Button expert;
+	Button custom;
+	Button custom_row;
+	Button custom_col;
+	Button custom_mine;
 
 	Button* current_mod_button = &easy;
-
+	Button* current_customize_button = nullptr;
 
 	MOD current_mod = MOD::Easy;
+	Custom_Input current_custom_input = Custom_Input::col;
 
 	int x = msg.x;
 	int y = msg.y;
-	int space_between_button = 10;
 
 };

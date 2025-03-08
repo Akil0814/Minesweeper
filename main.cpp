@@ -35,7 +35,15 @@ IMAGE Hard_Pushed;
 IMAGE Expert_Idle;
 IMAGE Expert_Hovered;
 IMAGE Expert_Pushed;
-
+IMAGE Custom_Idle;
+IMAGE Custom_Hovered;
+IMAGE Custom_Pushed;
+IMAGE Custom_row;
+IMAGE Custom_col;
+IMAGE Custom_mine;
+IMAGE Custom_row_Editing;
+IMAGE Custom_col_Editing;
+IMAGE Custom_mine_Editing;
 
 IMAGE MineExplode;
 IMAGE MineCover;
@@ -96,6 +104,16 @@ void LoadResource()
 	loadimage(&Expert_Idle, _T("res/Expert_Idle.png"));
 	loadimage(&Expert_Hovered, _T("res/Expert_Hovered.png"));
 	loadimage(&Expert_Pushed, _T("res/Expert_Pushed.png"));
+
+	loadimage(&Custom_Idle, _T("res/Custom_Idle.png"));
+	loadimage(&Custom_Hovered, _T("res/Custom_Hovered.png"));
+	loadimage(&Custom_Pushed, _T("res/Custom_Pushed.png"));
+	loadimage(&Custom_row, _T("res/Custom_row.png"));
+	loadimage(&Custom_col, _T("res/Custom_col.png"));
+	loadimage(&Custom_mine, _T("res/Custom_mine.png"));
+	loadimage(&Custom_row_Editing, _T("res/Custom_row_Editing.png"));
+	loadimage(&Custom_col_Editing, _T("res/Custom_col_Editing.png"));
+	loadimage(&Custom_mine_Editing, _T("res/Custom_mine_Editing.png"));
 
 	loadimage(&Menu_background, _T("res/Menu_back_ground.png"));
 	loadimage(&Menu_Start_Idle, _T("res/Menu_Start_Idle.png"));
