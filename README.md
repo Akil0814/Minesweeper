@@ -1,4 +1,4 @@
-# MineSweeper--扫雷
+# MineSweeper
 This is the first project I've tried to write myself. It’s a MineSweeper game based on the **[EasyX](https://easyx.cn/)** Graphics Library. It has all the functions that a classic minesweeper has, like mod selection, customizable mine board,in-game timer, and restart option<br>
 
 
