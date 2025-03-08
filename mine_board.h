@@ -11,7 +11,6 @@ using namespace std;
 #define KEEP_SPACE_EMPTY 1
 #define RESET 0
 
-
 extern Mine mine;
 
 extern IMAGE MineMarked;
@@ -30,7 +29,6 @@ extern IMAGE MineExplode;
 extern IMAGE MineFined;
 extern IMAGE MineWin;
 
-
 class MineBoard
 {
 public:
@@ -48,13 +46,10 @@ public:
 		board_mine.assign(row_mine, vector<int>(col_mine, IS_EMPTY));
 		board_show.assign(row_mine, vector<int>(col_mine, IS_EMPTY));
 		board_num.assign(row_mine, vector<int>(col_mine, IS_EMPTY));
-
 	}
 
 	void set_mine(const int index_x,const int index_y)
 	{
-
-
 		int count = num_of_mine;
 
 			board_mine[index_x][index_y] = KEEP_SPACE_EMPTY;
@@ -99,7 +94,6 @@ public:
 			for (int j = 1; j <= col_show; j++)
 				board_num[i][j] = (get_mine_count(i, j));
 		}
-
 	}
 
 	void draw_board()
@@ -155,7 +149,6 @@ public:
 				}
 			}
 		}
-
 	}
 
 	void show_all_mine()
@@ -225,7 +218,6 @@ public:
 
 	void check_mine(const int x,const int y)
 	{
-
 		if (board_mine[x][y] == IS_EMPTY && board_show[x][y] == IS_EMPTY)
 		{
 			board_show[x][y] = IS_CHEAKED;

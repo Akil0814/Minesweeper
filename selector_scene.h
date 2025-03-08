@@ -4,10 +4,7 @@
 #include"button.h"
 #include"mine_board.h"
 #include"mine.h"
-
-#include<iostream>
 #include<vector>
-#include <conio.h> 
 
 extern IMAGE Setting_background;
 extern IMAGE Setting_Back_Idle;
@@ -360,6 +357,7 @@ private:
 		settextcolor(RGB(0, 0, 0));
 		outtextxy(custom_row.cheek_left() + space_between_button, custom_row.cheek_top() + space_between_button, str);
 	}
+
 	void draw_tip_text_col()
 	{
 		static TCHAR str[12];
@@ -367,6 +365,7 @@ private:
 		settextcolor(RGB(0, 0, 0));
 		outtextxy(custom_col.cheek_left() + space_between_button, custom_col.cheek_top()+ space_between_button,str);
 	}
+
 	void draw_tip_text_mine()
 	{
 		static TCHAR str[12];

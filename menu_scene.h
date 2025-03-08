@@ -35,7 +35,6 @@ public:
 		setting.set_image(&Menu_Setting_Idle, &Menu_Setting_Hovered, &Menu_Setting_Pushed);
 		setting.set_top(start.cheek_top()+ start.get_button_height()+ space_between_button);
 		setting.set_left(start.cheek_left());
-
 	}
 
 	void on_update()

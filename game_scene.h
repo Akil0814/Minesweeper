@@ -3,13 +3,11 @@
 #include"mine_board.h"
 #include "scene_manager.h"
 #include"button.h"
-
 #include <chrono>
 
 extern ExMessage msg;
 extern IMAGE Bar;
 extern IMAGE MineBase;
-
 
 extern IMAGE Restart_Idle;
 extern IMAGE Restart_Hovered;
@@ -186,6 +184,5 @@ private:
 	std::chrono::steady_clock::time_point game_start_time = chrono::steady_clock::now();
 	std::chrono::steady_clock::time_point game_time_curren = chrono::steady_clock::now();
 	std::chrono::seconds duration = std::chrono::duration_cast<std::chrono::seconds>(game_time_curren - game_start_time);
-
 
 };

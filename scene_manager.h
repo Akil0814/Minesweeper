@@ -62,5 +62,6 @@ public:
 	}
 
 private:
+
 	Scene* current_scene = nullptr;
 };

@@ -79,7 +79,6 @@ Mine mine;
 
 void LoadResource()
 {
-
 	loadimage(&Setting_background, _T("res/Setting_background.png"));
 	loadimage(&Setting_Back_Idle, _T("res/Setting_Back_Idle.png"));
 	loadimage(&Setting_Back_Hovered, _T("res/Setting_Back_Hovered.png"));

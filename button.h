@@ -1,6 +1,5 @@
 #pragma once
 #include<graphics.h>
-#include<iostream>
 
 class Button
 {
