@@ -241,10 +241,20 @@ private:
 			break;
 		}
 
+		if (col_count < 2)
+		{
+			col_count = 2;
+		}
+		if (row_count < 2)
+		{
+			row_count = 2;
+		}
 		if (col_count * row_count <= mine_count)
 		{
 			mine_count = col_count * row_count - 1;
 		}
+
+
 		set_board_mod(col_count, row_count, mine_count);
 		current_mod_button->set_hold();
 
@@ -296,6 +306,19 @@ private:
 		switch (msg.message)
 		{
 		case WM_KEYDOWN:
+			if (msg.vkcode == 0x08&&all_input.size()>0)
+			{
+				all_input.pop_back();
+				vector<int> tmp(all_input);
+				tmp_num_for_loop = 0;
+				for (int i = 1; !tmp.empty(); i *= 10)
+				{
+					int t = tmp.back();
+					tmp_num_for_loop = tmp_num_for_loop + t * i;
+					tmp.pop_back();
+				}
+				*counter_input = tmp_num_for_loop;
+			}
 			if (msg.vkcode >= 0x30 && msg.vkcode <= 0x39&& all_input.size()<3)
 			{
 				switch (msg.vkcode)

@@ -1,3 +1,5 @@
+//~1500 line
+
 #include"scene_manager.h"
 #include"scene.h"
 #include"menu_scene.h"
